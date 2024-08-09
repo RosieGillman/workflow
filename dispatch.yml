@@ -1,0 +1,25 @@
+name: Run Script via Dispatch
+
+on:
+  workflow_dispatch:  # This allows the workflow to be manually triggered via the GitHub API or UI
+
+jobs:
+  run_script:
+    runs-on: ubuntu-latest  # Specifies the runner, i.e., the virtual machine to use
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2  # This checks out your repository's code
+
+      - name: Set up Python
+        uses: actions/setup-python@v2  # This sets up the Python environment
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt  # Install required packages, if any
+
+      - name: Run Python script
+        run: |
+          python comtrade.py  # Replace this with the command to run your script
