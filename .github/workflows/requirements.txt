@@ -1,3 +1,6 @@
 pandas
 numpy
 requests
+azure-functions
+comtrade
+azure-storage-blob
