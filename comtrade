@@ -55,7 +55,7 @@ test = comtrade.load_as_dataframe(CFG, DAT, encoding="iso-8859-1")
 #test.to_csv(CSV, index=True)
 
 csv_buffer = io.StringIO()
-test.to_csv(csv_buffer, index=False)
+test.to_csv(csv_buffer, index=True)
 
 # Name of the CSV file to be saved in the blob storage
 CSV = f"{name}CSV"
