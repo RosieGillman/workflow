@@ -52,7 +52,7 @@ DAT = name + "DAT"
 test = comtrade.load_as_dataframe(CFG, DAT, encoding="iso-8859-1")
 
 #CSV = name + "CSV"
-#test.to_csv(CSV, index=False)
+#test.to_csv(CSV, index=True)
 
 csv_buffer = io.StringIO()
 test.to_csv(csv_buffer, index=False)
