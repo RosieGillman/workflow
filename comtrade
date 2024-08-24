@@ -68,4 +68,4 @@ blob_client.upload_blob(csv_buffer.getvalue(), blob_type="BlockBlob", overwrite=
 
 os.remove(CFG)
 os.remove(DAT)
-os.remove(CSV)
+#os.remove(CSV)
