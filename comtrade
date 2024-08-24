@@ -1,9 +1,11 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from azure.storage.blob import BlobServiceClient, generate_blob_sas, BlobSasPermissions
 import pandas as pd
 import comtrade
 import numpy as np
 import requests
+import io
+import os
 
 #enter credentials
 account_name = 'dtftest1'
@@ -32,7 +34,7 @@ for blob_i in blob_list:
                                 blob_name = blob_i,
                                 account_key=account_key,
                                 permission=BlobSasPermissions(read=True),
-                                expiry=datetime.utcnow() + timedelta(hours=1))
+                                expiry = datetime.now(timezone.utc) + timedelta(hours=1))
     
     sas_url = 'https://' + account_name+'.blob.core.windows.net/' + container_name + '/' + blob_i + '?' + sas_i
     
@@ -48,4 +50,22 @@ name = blob_i[:-3]
 CFG = name + "CFG"
 DAT = name + "DAT"
 test = comtrade.load_as_dataframe(CFG, DAT, encoding="iso-8859-1")
-print(test)
+
+#CSV = name + "CSV"
+#test.to_csv(CSV, index=False)
+
+csv_buffer = io.StringIO()
+test.to_csv(csv_buffer, index=False)
+
+# Name of the CSV file to be saved in the blob storage
+CSV = f"{name}CSV"
+
+# Create a blob client using the CSV file name
+blob_client = container_client.get_blob_client(CSV)
+
+# Upload the CSV to Azure Blob Storage
+blob_client.upload_blob(csv_buffer.getvalue(), blob_type="BlockBlob", overwrite=True)
+
+os.remove(CFG)
+os.remove(DAT)
+os.remove(CSV)
